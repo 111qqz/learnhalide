@@ -16,8 +16,8 @@ int main(int argc, char **argv) {
     cout<<input.width()<<" "<<input.height()<<" "<<input.channels()<<endl;
 
     // 手动crop
-    Halide::Var x, y, c;
-    Halide::Func brighter;
+    Halide::Var x("x"), y("y"), c("c");
+    Halide::Func brighter("brighter");
     brighter(x,y,c) = input(x,y,c);
     Halide::Buffer<uint8_t> result(input.width(), input.height(), 3);
     /* Halide::BUffer.crop(int d,int min,int extent)
@@ -30,6 +30,7 @@ int main(int argc, char **argv) {
     result.crop(0,100,1000);
     result.crop(1,100,260);
     result.crop(2,1,1);
+    
 
     brighter.realize(result);
     save_image(result, "croped2.png");
